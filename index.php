@@ -165,12 +165,17 @@ if(isset($_POST['login'])){
         $("#response").html(response);
             if(response.indexOf('sucess') >= 0)
             swal({
-                title: "Đăng nhập thành công!", 
-                text: "Bạn đã có thể mua hàng!",
-                type: "success",
-                timer: 4000 
-            });
-            window.location ='admin.php';
+  title: "Login successfull",
+  icon: "success",
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location ='admin.php';
+  } 
+});
+
+    
+            
             if(response.indexOf('false') >= 0)
             swal({
                 title: "Sai tài khoản hoặc mất khẩu rồi", 

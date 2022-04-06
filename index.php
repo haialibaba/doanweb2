@@ -97,8 +97,16 @@ if(isset($_POST['login'])){
         $result = mysqli_query($conn, $check);
 
         if( mysqli_num_rows($result) > 0){
-            echo '<script language="javascript">alert("Tài khoản đã có người sử dụng, vui lòng tạo tài khoản mới!")</script>';
+            echo '<script language="javascript">swal({
+                title: "Account and password have been used. Please register another one",
+                icon: "warning",
+              })</script>';
         }else{
+            echo '<script language="javascript">swal({
+                title: "Sign up success",
+                icon: "success",
+              })</script>';
+
         $sql ="INSERT INTO tbl_khachhang(SDT,DiaChi,TenDangNhap,MatKhau,Email) VALUES ('$phonenumber','$useraddress','$username','$userpassword','$useremail')";
         mysqli_query($conn,$sql);
     
@@ -108,7 +116,7 @@ if(isset($_POST['login'])){
     ?>
 
             <div class="form signupForm">
-                <form action="" method="POST" onsubmit="return check();">
+                <form action="" method="POST" id="form-register">
                     <h3>Sign Up</h3>
                     <div class="form-group invalid">
                         <input name="newusername" id="new-user-name" type="text" placeholder="Username">
@@ -146,15 +154,19 @@ if(isset($_POST['login'])){
     </div>
 
 
-    <script src="main.js"></script>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="main.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.login-btn').on('click',function(){
                 var username = $('#user-name').val();
             	var password = $('#user-password').val();
                 if (username == "" || password == "") {
-                    alert("Nhập đầy đủ thông tin vào giùm");
+                    swal({
+  title: "Don't let user and password empty",
+  icon: "warning",
+})
 	}else{
         $.ajax({
 		  url: "index.php",
@@ -173,9 +185,6 @@ if(isset($_POST['login'])){
     window.location ='admin.php';
   } 
 });
-
-    
-            
             if(response.indexOf('false') >= 0)
             swal({
                 title: "Sai tài khoản hoặc mất khẩu rồi", 
@@ -191,52 +200,54 @@ if(isset($_POST['login'])){
             });
         });
 
-    function check(){
-        var name = document.getElementById('new-user-name').value;
-        var phonenumber = document.getElementById('new-phonenumber').value;
-        var email = document.getElementById('new-user-email').value;
-        var address = document.getElementById('new-user-address').value;
-        var password = document.getElementById('new-user-password').value;
-        var confirmpass = document.getElementById('confirm-user-password').value;
+    //     function check(){
+    //     var name = document.getElementById('new-user-name').value;
+    //     var rexName= /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+    //     var phonenumber = document.getElementById('new-phonenumber').value;
+    //     var rexPhone = /(0|0[3|5|7|8|9])+([0-9]{8})/;
+    //     var email = document.getElementById('new-user-email').value;
+    //     var rexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g ;
+    //     var address = document.getElementById('new-user-address').value;
+    //     var password = document.getElementById('new-user-password').value;
+    //     var rexPassword =  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    //     var confirmpass = document.getElementById('confirm-user-password').value;
 
 
 
-        if(name == "" || name.length < 5)
-    {
-        document.getElementById('errolName').textContent= 'Tên không hợp lệ';
-        return false;
-    }
+    //     if(name == "" || !rexName.test(name))
+    // {
+    //     document.getElementById('errolName').textContent= 'Tên không hợp lệ';
+    //     return false;
+    // }
 
-    if(phonenumber == "" || phonenumber.length < 10)
-    {
-        document.getElementById('errolPhoneNumber').textContent= 'Số điện thoại không hợp lệ';
-        return false;
-    }
+    // if(phonenumber == "" || !rexPhone.test(phonenumber))
+    // {
+    //     document.getElementById('errolPhoneNumber').textContent= 'Số điện thoại không hợp lệ';
+    //     return false;
+    // }
 
     
-    if(email == "" || email.length < 5 || email.indexOf('@') == -1)
-    {
-        document.getElementById('errolEmail').textContent= 'Email không hợp lệ';
-        return false;
-    }
-    if(address == "")
-    {
-        document.getElementById('errolAddress').textContent= 'Địa chỉ không hợp lệ';
-        return false;
-    }
-    if(password == "" || password.length < 5)
-    {
-        document.getElementById('errolPassword').textContent = "Password phải lớn hơn 5 kí tự";
-        return false;
-    }
-    if(confirmpass != password){
-        document.getElementById('errolConfirmPassword').textContent = "Password không trùng khớp";
-        return false;
-    }
+    // if(email == "" || !rexEmail.test(email))
+    // {
+    //     document.getElementById('errolEmail').textContent= 'Email không hợp lệ';
+    //     return false;
+    // }
+    // if(address == "")
+    // {
+    //     document.getElementById('errolAddress').textContent= 'Địa chỉ không hợp lệ';
+    //     return false;
+    // }
+    // if(password == "" || !rexPassword.test(password))
+    // {
+    //     document.getElementById('errolPassword').textContent = "Password phải lớn hơn 5 kí tự";
+    //     return false;
+    // }
+    // if(confirmpass != password){
+    //     document.getElementById('errolConfirmPassword').textContent = "Password không trùng khớp";
+    //     return false;
+    // }
 
-    }
-
-
+    // }
     </script>
 
 </body>

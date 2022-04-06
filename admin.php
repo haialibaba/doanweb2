@@ -187,10 +187,9 @@ if(!isset($_SESSION['mySession'])){
                     <div class="app__content-container-show hide-on-mobile-admin">
 
                         <?php
-        $product = "SELECT * from tbl_sanpham INNER JOIN tbl_loaisanpham on tbl_sanpham.LoaiSanPham = tbl_loaisanpham.MaLoai";
+        $product = "SELECT * from tbl_sanpham,tbl_loaisanpham where tbl_sanpham.LoaiSanPham = tbl_loaisanpham.MaLoai ORDER by MaSanPham ASC";
         $result = mysqli_query($conn,$product);  
             
-         
             while($row = mysqli_fetch_assoc($result)){
                 ?>
                         <div class="app__content-view">
@@ -239,7 +238,7 @@ if(!isset($_SESSION['mySession'])){
                                     <i class="fas fa-pen"></i>
                                 </div>
 
-                                <div class="app__content-view-tools-delete">
+                                <div class="app__content-view-tools-delete" name="delete-product"> 
                                     <i class="fas fa-trash-alt"></i>
                                 </div>
                             </div>
@@ -314,7 +313,7 @@ if(!isset($_SESSION['mySession'])){
                                     <i class="fas fa-pen"></i>
                                 </div>
 
-                                <div class="app__content-mobile-view-tools-delete">
+                                <div class="app__content-mobile-view-tools-delete" name="delete-product">
                                     <i class="fas fa-trash-alt"></i>
                                 </div>
                             </div>

@@ -905,6 +905,7 @@ button.close-search {
     width: 20%;
     overflow-x: hidden;
     padding: 8px;
+    padding-left: 40px;
 }
 .app__content-view-description {
     width: 12.5%;
@@ -957,6 +958,7 @@ button.close-search {
 .app__content-title-type {
     width: 20%;
     padding: 8px;
+    padding-left:20px;
 }
 
 .app__content-title-name {

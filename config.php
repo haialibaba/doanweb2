@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect('localhost','root','','doanweb2');
+$conn = mysqli_connect('localhost','root','','shopw2');
 
 mysqli_set_charset($conn,'utf8');
 

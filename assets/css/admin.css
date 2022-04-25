@@ -1012,8 +1012,15 @@ button.close-search {
         left: 20% !important;
         width: 60% !important;
     }
+    
     .header__btn{
         display: none !important;
+    }
+    .app__content-title_order-user{
+        padding-left: 12px;
+    }
+    .app__content-view_order-detail{
+        padding-right: 12px;
     }
 }
 @media (min-width:739px) {
@@ -1021,6 +1028,7 @@ button.close-search {
         display: none;
     }
 
+   
 }
 
 @media (max-width:740px) {
@@ -1157,9 +1165,94 @@ button.close-search {
     }
 
 
+    .app__content-mobile-view_order-id,
+    .app__content-mobile-view_order-user,
+    .app__content-mobile-view_order-date,
+    .app__content-mobile-view_order-total,
+    .app__content-mobile-view_order-status,
+    .app__content-mobile-view_order-detail {
+        padding: 4px;
+    }
+    .app__content-mobile-view_order-id p,
+    .app__content-mobile-view_order-user p,
+    .app__content-mobile-view_order-date p,
+    .app__content-mobile-view_order-total p,
+    .app__content-mobile-view_order-status p,
+    .app__content-mobile-view_order-detail p{
+        font-size: 16px;
+        font-family: sans-serif;
+    }
+
+    .app__content-mobile-view-tools {
+        padding: 10px 4px 4px 4px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+
+    .app__content-mobile-view_order-tools-delete {
+        padding: 6px 8px;
+        background-color: #E74C3C;
+        color: white;
+        border: 1px solid #E74C3C;
+        border-radius: 5px;
+    }
+
+    .app__content-mobile-view_order-tools-delete:hover {
+        cursor: pointer;
+        background-color: white;
+        color: black;
+    }
+    .app__content-mobile-view_order-tools-detail{
+        background-color: rgba(255, 209, 93, 1);
+    padding: 6px;
+    margin: 8px 0;
+    }
+
+    .modal__detail-bill-content{
+        left: 5% !important;
+        width: 90% !important;
+    }
+
+    .modal__detail-bill-product-content{
+        max-height: 150px !important;
+    }
+    .modal__detail-bill-header p{
+        font-size: 16px !important;
+    }
+
+    .modal__detail-bill-id p{
+        font-size: 14px !important;
+    }
+
+    .modal__detail-bill-product-header p{
+        font-size: 15px !important;
+    }
+    .modal__detail-bill-product-id-title p,
+    .modal__detail-bill-product-name-title p,
+    .modal__detail-bill-product-img-title p,
+    .modal__detaill-bill-product-prices-title p{
+        font-size: 14px !important;
+    }
+
+    .modal__detail-bill-product-id p,
+    .modal__detail-bill-product-name p,
+    .modal__detaill-bill-product-prices p{
+        font-size: 13px !important;
+    }
+
+   
 }
 
 .modal__add-product {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+    animation: 0.3s ease-in 0s 1 normal none running transitionY;
+
+}
+.modal__edit-product {
     width: 100%;
     height: 100%;
     text-align: center;
@@ -1219,7 +1312,6 @@ button.close-search {
 .modal__add-product-user input,
 .modal__add-product-name input,
 .modal__add-product-prices input,
-.modal__add-product-type input,
 .modal__add-product-description input,
 .modal__add-product-quantity input,
 #selectadminproduct {
@@ -1230,6 +1322,10 @@ button.close-search {
     font-family: sans-serif;
     color: #333;
     border: 1px solid #333;
+}
+.modal__add-product-type select{
+    width: 70%;
+    padding: 8px;
 }
 
 .modal__add-product-img input {
@@ -1271,4 +1367,262 @@ button.close-search {
 .modal__add-product-btn-close:hover {
     cursor: pointer;
     color: #FCB35F;
+}
+.app__content-title_order-id{
+    width: 5%;
+    padding: 8px;
+}
+.app__content-title_order-user{
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-title_order-date {
+    width: 17.5%;
+    padding: 8px;
+        padding-left: 12px;
+
+}
+.app__content-title_order-total {
+    width: 17.5%;
+    padding: 8px;
+   
+}
+.app__content-title_order-status{
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-title_order-detail {
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-view_order-detail button{
+    background-color: rgba(255, 209, 93, 1);
+    padding: 6px;
+}
+/*app content view order*/
+.app__content-view_order-id{
+    width: 5%;
+    padding: 8px;
+}
+.app__content-view_order-user{
+    width: 17.5%;
+    padding: 8px;
+    padding-left: 50px;
+}
+.app__content-view_order-date {
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-view_order-total {
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-view_order-status{
+    width: 17.5%;
+    padding: 8px;
+}
+.app__content-view_order-detail {
+    width: 17.5%;
+    padding: 8px;
+    padding-left: 28px;
+}
+.app__content-view_order-tools-delete {
+    padding: 6px 8px;
+    background-color: #E74C3C;
+    color: white;
+    border-radius: 5px;
+    margin-left: 28px;
+    border: 1px solid #E74C3C;
+    transition: linear 0.1s;
+}
+
+.modal__detail-bill{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+}
+
+.modal__detail-bill-overlay{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+.modal__detail-bill-content{
+    top: 15%;
+    left: 20%;
+    width: 60%;
+    padding-top: 8px;
+    padding-bottom: 16px;
+    background-color: #FAF5F5;
+    z-index: 11;  
+    border-radius: 5px;
+    animation: .3s ease-in transitionY;
+    position: fixed;
+}
+
+.modal__detail-bill-header{
+    padding: 8px;
+    text-align: center;
+}
+
+.modal__detail-bill-header p{
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.modal__detail-bill-id{
+    margin-top: 8px;
+}
+
+.modal__detail-bill-id p{
+    font-size: 15px;
+    font-family: sans-serif;
+}
+
+.modal__detail-bill-product-header{
+    text-align: left;
+    padding: 8px 12px;
+}
+
+.modal__detail-bill-product-header p{
+    font-family: sans-serif;
+    font-weight: 550;
+    font-size: 16px;
+}
+
+.modal__detail-bill-product-content{
+    margin-top: 12px;
+    overflow-y: scroll;
+    max-height: 250px;
+}
+
+.modal__detail-product-view{
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 12px;
+    align-items: center;
+    margin-top: 4px;
+    background-color: white;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.modal__detail-bill-product-id,
+.modal__detail-bill-product-name,
+.modal__detaill-bill-product-prices,
+.modal__detail-bill-product-img{
+    padding: 8px;
+    text-align: left;
+}
+
+.modal__detail-bill-product-id,
+.modal__detaill-bill-product-prices{
+    width: 20%;
+    overflow-x: hidden;
+}
+
+.modal__detaill-bill-product-quantify{
+    padding: 8px;
+}
+
+.modal__detail-bill-product-img,
+.modal__detail-bill-product-name{
+    width: 25%;
+    overflow-x: hidden;
+}
+
+.modal__detaill-bill-product-quantify{
+    width: 10%;
+    overflow: hidden;
+}
+
+.modal__detail-bill-product-id p,
+.modal__detail-bill-product-name p,
+.modal__detaill-bill-product-prices p,
+.modal__detaill-bill-product-quantify p{
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.modal__detail-bill-product-img img{
+    width: 50px;
+    height: 50px;
+}
+
+.modal__detail-bill-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 12px;
+    text-align: left;
+    background-color: white;
+    margin: 0 8px;
+}
+
+.modal__detail-bill-product-id-title,
+.modal__detaill-bill-product-prices-title{
+    padding: 8px;
+    text-align: left;
+    width: 20%;
+}
+
+.modal__detail-bill-product-img-title,
+.modal__detail-bill-product-name-title{
+    padding: 8px; 
+    text-align: left;
+    width: 25%;
+}
+
+.modal__detaill-bill-product-quantify-title{
+    width: 10%;
+    padding:8px;
+    text-align: left;
+}
+
+.modal__detail-bill-product-img-title p,
+.modal__detail-bill-product-name-title p,
+.modal__detail-bill-product-id-title p,
+.modal__detaill-bill-product-prices-title p,
+.modal__detaill-bill-product-quantify-title p{
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+.modal__detail-close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+    transition: linear 0.3s;
+}
+
+.modal__detail-close i{
+    font-size: 23px;
+}
+
+.modal__detail-close:hover{
+    cursor: pointer;
+    opacity: 0.6;
+    color: #FCB35F;
+}
+
+.modal__detail-bill-product-total,.modal__detail-bill-product-time{
+    padding: 8px;
+    margin: 8px;
+    background-color: white;
+}
+
+.modal__detail-bill-product-total p,
+.modal__detail-bill-product-time p{
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 16px;
 }

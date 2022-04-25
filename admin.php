@@ -5,6 +5,7 @@ if(!isset($_SESSION['mySession'])){
     header('location:index.php');
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@ if(!isset($_SESSION['mySession'])){
     <link rel="stylesheet"
         href="./assets/fonts/fontawesome-free-5.15.4-web/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css">
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Document</title>
 </head>
 
@@ -32,11 +33,52 @@ if(!isset($_SESSION['mySession'])){
     <?php
        require_once('header.php');
     ?>
-    
+    <?php
+        if(isset($_POST['addProduct-btn'])){
+            $productname = $_POST['productname'];
+            $productimg = $_FILES['productimg']['name'];
+            $productimg_tmp = $_FILES['productimg']['tmp_name'];
+            $productprice = $_POST['productprice'];
+            $productquantity = $_POST['productquantity'];
+            $producttype = $_POST['producttype'];
+            $productdescription = $_POST['productdescription'];
+            $path = './uploads/';  
+
+            $check = "SELECT * FROM tbl_sanpham WHERE TenSanPham = '$productname'";
+            $result = mysqli_query($conn, $check);
+            if( mysqli_num_rows($result) > 0){
+                echo '<script language="javascript">swal({
+                    title: "The product already exists. ",
+                    icon: "warning",
+                  })</script>';
+            }else
+                if($productname == '' || $productquantity ==''  || $productdescription == '' || $productprice == ''){
+                    echo '<script language="javascript">swal({
+                        title: "Do not let it empty. ",
+                        icon: "warning",
+                        text:"Please insert !",
+                      })</script>';          
+                        }
+                    else{
+                echo '<script language="javascript">swal({
+                    title: "Add product successfull. ",
+                    icon: "success",
+                  })</script>';
+                
+
+            $sql ="INSERT INTO tbl_sanpham(TenSanPham,HinhAnhSanPham,SoLuongSanPham,MoTaSanPham,GiaSanPham,LoaiSanPham) VALUES ('$productname','$productimg','$productquantity',' $productdescription','$productprice','$producttype')";
+            move_uploaded_file($productimg_tmp,$path.$productimg);
+            $query = mysqli_query($conn,$sql);
+                }
+        }
+
+       
+       
+    ?>
    
         
 
-        <form action="XuLyProductAdmin.php" method="POST" enctype="multipart/form-data">
+        <form action="" method="POST" enctype="multipart/form-data" id="modal__addProduct">
             <div class="modal__add-product">
                 <div class="modal__add-product-overlay" onclick="hideModalAdd();"></div>
 
@@ -59,7 +101,16 @@ if(!isset($_SESSION['mySession'])){
                     </div>
 
                     <div class="modal__add-product-type">
-
+                    <select id="txtadmintype" name="producttype" >
+                    <?php
+        $brand = "SELECT * from tbl_loaisanpham ";
+        $result = mysqli_query($conn,$brand);  
+            
+            while($rowd = mysqli_fetch_assoc($result)){
+                ?>
+                            <option value="<?php echo $rowd['MaLoai']; ?>"><?php echo $rowd['TenLoai']; ?></option>
+                            <?php  }  ?>
+                    </select>
                     </div>
 
                     <div class="modal__add-product-description">
@@ -79,7 +130,7 @@ if(!isset($_SESSION['mySession'])){
                     </div>
 
                     <div class="modal__add-product-btn" style="display: none;" id="btnadminupdate">
-                        <!-- <button>Cập nhật</button> -->
+                        <button id="editProduct" name="editProduct-btn">Cập nhật</button>
                     </div>
 
                     <div class="modal__add-product-btn-close" onclick="hideModalAdd();">
@@ -88,6 +139,8 @@ if(!isset($_SESSION['mySession'])){
                 </div>
             </div>
         </form>
+
+
       
     
 
@@ -118,7 +171,7 @@ if(!isset($_SESSION['mySession'])){
                                 class="fas fa-users"></i> <span id="quanlynd" style="display: inline;">Quản lý người
                                 dùng</span></li>
                     </a>
-                    <a href="">
+                    <a href="xulydonhang.php">
                         <li class="app__category-list-item" id="managerCart" style="text-align: left;"><i
                                 class="fas fa-cart-arrow-down"></i> <span id="xulydonhang" style="display: inline;">Xử
                                 lý đơn hàng</span></li>
@@ -142,207 +195,14 @@ if(!isset($_SESSION['mySession'])){
                                 class="fas fa-cart-plus"></i> Thêm mới</button></div>
                 </div>
 
-                <div class="app__content-container">
+                <div class="app__content-container"  id="loadProduct-pc">
 
-                    <div class="app__content-container-title hide-on-mobile">
-                        <div class="app__content-title">
-                            <div class="app__content-title-id">
-                                <p>ID</p>
-                            </div>
+                  
 
-                            <div class="app__content-title-user">
-                                <p>Người bán</p>
-                            </div>
-
-                            <div class="app__content-title-name">
-                                <p>Tên sản phẩm</p>
-                            </div>
-
-                            <div class="app__content-title-quantity">
-                                <p>Số lượng</p>
-                            </div>
-
-                            <div class="app__content-title-type">
-                                <p>Loại</p>
-                            </div>
-
-                            <div class="app__content-title-description">
-                                <p>Mô Tả</p>
-                            </div>
-
-                            <div class="app__content-title-img">
-                                <p>Ảnh sản phẩm</p>
-                            </div>
-
-                            <div class="app__content-title-prices">
-                                <p>Giá bán</p>
-                            </div>
-
-                            <div class="app__content-title-tools">
-                                <p>Công cụ</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="app__content-container-show hide-on-mobile-admin">
-
-                        <?php
-        $product = "SELECT * from tbl_sanpham,tbl_loaisanpham where tbl_sanpham.LoaiSanPham = tbl_loaisanpham.MaLoai ORDER by MaSanPham ASC";
-        $result = mysqli_query($conn,$product);  
-            
-            while($row = mysqli_fetch_assoc($result)){
-                ?>
-                        <div class="app__content-view">
-                            <div class="app__content-view-id">
-                                <p>
-                                    <?php echo $row['MaSanPham']; ?>
-                                </p>
-                            </div>
-                            <div class="app__content-view-user">
-                                <p>ADMIN</p>
-                            </div>
-                            <div class="app__content-view-name">
-                                <p title=' <?php echo $row['TenSanPham']; ?>'>
-                                <?php echo $row['TenSanPham']; ?></p>
-                            </div>
-
-                            <div class="app__content-view-quantity">
-                                <p>
-                                    <?php echo $row['SoLuongSanPham']; ?>
-                                </p>
-                            </div>
-
-                            <div class="app__content-view-type">
-                                <p>
-                                    <?php echo $row['TenLoai']; ?>
-                                </p>
-                            </div>
-
-                            <div class="app__content-view-description">
-                                <p title=' <?php echo $row['MieuTaSanPham']; ?>'>
-                                    <?php echo $row['MieuTaSanPham']; ?>
-                                </p>
-                            </div>
-
-                            <div class="app__content-view-img">
-                                <img class='overflow-hidden object-cover aspect-video' src="./uploads/<?php echo $row['HinhAnhSanPham']; ?>" alt="">
-                            </div>
-
-                            <div class="app__content-view-prices">
-                                <p>
-                                    <?php echo $row['GiaSanPham']; ?>
-                                </p>
-                            </div>
-                            <div class="app__content-view-tools">
-                                <div class="app__content-view-tools-update">
-                                    <i class="fas fa-pen"></i>
-                                </div>
-
-                                <div class="app__content-view-tools-delete" name="delete-product"> 
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <?php  }  ?>
-
-                    </div>
-
-                    <div class="app__content-mobile hide-on-pc display-on-mobile">
-                        <?php
-        $product = "SELECT * from tbl_sanpham INNER JOIN tbl_loaisanpham on tbl_sanpham.LoaiSanPham = tbl_loaisanpham.MaLoai";
-        $result = mysqli_query($conn,$product);  
-            
-         
-            while($row = mysqli_fetch_assoc($result)){
-                ?>
-                        <div class="app__content-mobile-view">
-                            <div class="app__content-mobile-view-id">
-                                <p><i class="fas fa-radiation-alt"></i> ID: <span>
-                                        <?php echo $row['MaSanPham']; ?>
-                                    </span></p>
-                            </div>
-
-                            <div class="app__content-mobile-view-user">
-                                <p><i class="fas fa-user"></i> Người bán: <span>ADMIN</span> </p>
-                            </div>
-
-                            <div class="app__content-mobile-view-name">
-                                <p><i class="fab fa-product-hunt"></i> Tên sản phẩm: <span>
-                                        <?php echo $row['TenSanPham']; ?>
-                                    </span></p>
-                            </div>
-
-                            <div class="app__content-mobile-view-quantity">
-                                <p><i class="ti-pie-chart"></i> Số Lượng: <span>
-                                        <?php echo $row['SoLuongSanPham']; ?>
-                                    </span></p>
-                            </div>
-
-                            <div class="app__content-mobile-view-type">
-                                <p><i class="ti-info-alt"></i> Loại: <span>
-                                        <?php echo $row['TenLoai']; ?>
-                                    </span></p>
-                            </div>
-
-                            <div class="app__content-mobile-view-description">
-                                <p><i class="ti-info-alt"></i> Mô tả: <span>
-                                        <?php echo $row['MieuTaSanPham']; ?>
-                                    </span></p>
-                            </div>
-
-                     
-
-                            <div class="app__content-mobile-view-img">
-                                <div class="app__content-mobile-view-img-content">
-                                    <p><i class="far fa-image"></i> Ảnh: </p>
-                                </div>
-
-                                <div class="app__content-mobile-view-img-img">
-                                    <img src="./uploads/<?php echo $row['HinhAnhSanPham']; ?>" alt="">
-                                </div>
-                            </div>
-
-                            <div class="app__content-mobile-view-prices">
-                                <p><i class="fas fa-dollar-sign"></i> Giá: <span>
-                                        <?php echo $row['GiaSanPham']; ?>
-                                    </span></p>
-                            </div>
-
-                            <div class="app__content-mobile-view-tools">
-                                <div class="app__content-mobile-view-tools-update">
-                                    <i class="fas fa-pen"></i>
-                                </div>
-
-                                <div class="app__content-mobile-view-tools-delete" name="delete-product">
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <?php  }  ?>
-                    </div>
-
-                    <div class="pagination">
-                        <div class="pagination__list">
-                            <a href="admin.html" class="pagination__list-link">
-                                <div class="pagination__list-item">Home</div>
-                            </a>
-                            <a href="admin.html?manager=product&amp;page=1#" id="prePage" class="pagination__list-link">
-                                <div class="pagination__list-item">Prev</div>
-                            </a>
-                            <a href="admin.html?manager=product&amp;page=1" class="pagination__list-link" id="page1">
-                                <div class="pagination__list-item">1</div>
-                            </a>
-                            <a href="admin.html?manager=product&amp;page=2" class="pagination__list-link" id="page2">
-                                <div class="pagination__list-item">2</div>
-                            </a>
-                            <a href="admin.html?manager=product&amp;page=3" class="pagination__list-link" id="page3">
-                                <div class="pagination__list-item">3</div>
-                            </a>
-                            <a href="admin.html?manager=product&amp;page=2" id="nextPage" class="pagination__list-link">
-                                <div class="pagination__list-item">Next</div>
-                            </a>
-                        </div>
-                    </div>
+                    
+                    <div id="del-noti"></div>
+                    <div id="edit-noti"></div>
+                    
 
                 </div>
 
@@ -351,98 +211,38 @@ if(!isset($_SESSION['mySession'])){
         </div>
 
     </div>
+            </div>
 </body>
-<script>
-    const searchbtn = document.querySelector('.search-icon');
-    const formSearch = document.querySelector('.search-wrapper');
-    const searchInput = document.querySelector('.search-input');
-    const Inputholder = document.querySelector('.input-holder');
-    const closebtn = document.querySelector('.close-search');
-    searchbtn.onclick = function () {
-        formSearch.classList.add('active')
-    }
-    closebtn.onclick = function () {
-        formSearch.classList.remove('active')
-    }
-    function showFunction() {
-        document.getElementById('showFunction').style.display = "none";
-        document.getElementById('header__setting').style.display = "flex";
-        document.getElementById('hideFunction').style.display = "block";
-    }
-    function hideFunction() {
-        document.getElementById('showFunction').style.display = "block";
-        document.getElementById('header__setting').style.display= "none";
-        document.getElementById('hideFunction').style.display = "none";
-    }
-    function displayModalBars() {
-        document.getElementById('barsOverlay').style.display = "block";
-        document.getElementById('barsContent').style.display = "block";
-    }
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="main.js"></script>
+<script type="text/javascript">
+     $(document).ready(function(){
+        view_data();
+        function view_data(){
+            $.post("loadProduct.php",function(data){
+                $("#loadProduct-pc").html(data);
+                  
+            })
+        }
 
-    function hideModalBars() {
-        document.getElementById('barsOverlay').style.display = "none";
-        document.getElementById('barsContent').style.display = "none";
-        hideCategoryBars();
-    }
+    $(document).on('click','.del-product',function(){
+        var id = $(this).val();
+        var check = confirm("xóa hay không");
+              if(check == true ){
+                $.post("XuLyProductAdmin.php",{id : id},function(data){
+            $("#del-noti").html(data);
+            view_data();
+        })
+              }
+       
+    });
 
-    function hideAdminBar() {
-        document.querySelector('.app__category-heading').style.display = "none";
-        document.querySelector('.app__category').style.width = "70px";
-        document.getElementById('quanlysp').style.display = "none";
-        document.getElementById('quanlynd').style.display = "none";
-        document.getElementById('xulydonhang').style.display = "none";
-        document.getElementById('thongkedoanhthu').style.display = "none";
-        document.getElementById('managerProduct').style.textAlign = "center";
-        document.getElementById('managerUser').style.textAlign = "center";
-        document.getElementById('managerCart').style.textAlign = "center";
-        document.getElementById('managerStatistic').style.textAlign = "center";
-        document.querySelector('.app__category-header').style.justifyContent = "center";
-        document.getElementById('hideAdmin').style.display = "none";
-        document.getElementById('displayAdmin').style.display = "block";
-    }
-    function displayAdminBar() {
-        document.querySelector('.app__category-heading').style.display = "flex";
-        document.querySelector('.app__category').style.width = "253px";
-        document.getElementById('quanlysp').style.display = "inline";
-        document.getElementById('quanlynd').style.display = "inline";
-        document.getElementById('xulydonhang').style.display = "inline";
-        document.getElementById('thongkedoanhthu').style.display = "inline";
-        document.getElementById('managerProduct').style.textAlign = "left";
-        document.getElementById('managerUser').style.textAlign = "left";
-        document.getElementById('managerCart').style.textAlign = "left";
-        document.getElementById('managerStatistic').style.textAlign = "left";
-        document.querySelector('.app__category-header').display = "flex";
-        document.getElementById('hideAdmin').style.display = "block";
-        document.getElementById('displayAdmin').style.display = "none";
-    }
-    function addAdminProduct() {
-        renderAddProduct();
-        displayModalAdd();
-    }
 
-    function renderAddProduct() {
-        $i = 1;
-        document.querySelector('.modal__add-product-user').innerHTML = `<input type="text" value="ADMIN" id="txtadminuser" readonly>`;
-        document.querySelector('.modal__add-product-name').innerHTML = ` <input type="text" placeholder="Tên sản phẩm ....." value="" id="txtadminname" name="productname">`;
-        document.querySelector('.modal__add-product-quantity').innerHTML = ` <input type="text" placeholder="Số lượng sản phẩm" value="" id="txtadminquantity" name="productquantity">`;
-        document.querySelector('.modal__add-product-type').innerHTML = ` <input type="text" placeholder="Loại sản phẩm" value="" id="txtadmintype" name="producttype">`;
-        document.querySelector('.modal__add-product-description').innerHTML = ` <input type="text" placeholder="Mô tả sản phẩm" value="" id="txtadmindescription" name="productdescription">`;
-        document.querySelector('.modal__add-product-prices').innerHTML = ` <input type="text" placeholder="Giá sản phẩm" value="" id="txtadminprices" name="productprice">`;
-        document.querySelector('.modal__add-product-img').innerHTML = `<input type="file" name="productimg" id="fadminimg">`;
-        document.getElementById('btnadminadd').innerHTML = `<button name="addProduct-btn" ">Thêm mới</button>`;
-        document.getElementById('btnadminadd').style.display = "block";
-        document.getElementById('btnadminupdate').style.display = "none";
-        document.querySelector('.modal__add-product-header-heading').textContent = "Thêm mới sản phẩm";
-    }
-    function displayModalAdd() {
-        document.querySelector('.modal__add-product').style.display = "block";
-    }
-    function hideModalAdd() {
-        document.querySelector('.modal__add-product').style.display = "none";
-    }
-    function hideModalFunction(){
-        document.querySelector('.header__setting-noti').style.display = "none";
-    }
+    
+     
+})
+
+
 </script>
 
 </html>

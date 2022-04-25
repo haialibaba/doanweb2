@@ -4,10 +4,10 @@ include'config.php';
 session_start();
 if(isset($_SESSION['mySession'])){
     header('location:admin.php');
-    exit();
+    exit(); 
 }
 
-$conn = mysqli_connect('localhost','root','','doanweb2');
+$conn = mysqli_connect('localhost','root','','shopw2');
 if(isset($_POST['login'])){
     $username= $conn->real_escape_string($_POST['username']);
     $password= $conn->real_escape_string($_POST['password']);
@@ -48,14 +48,14 @@ if(isset($_POST['login'])){
         </div>
         <div class="formBx">
             <div class="form signinForm">
-                <form id="login-form" action="index.php" method="post">
+                <form id="login-form" action="" method="post">
                     <h3>Sign In</h3>
                     <div class="form-group">
-                        <input name="user-name" id="user-name" type="text" placeholder="Username">
+                        <input name="user-name" id="user-name" type="text"  placeholder="Username">
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <input name="user-password" id="user-password" type="password" placeholder="Password">
+                        <input name="user-password" id="user-password" type="password"  placeholder="Password">
                         <span class="form-message"></span>
                     </div>
                     <a href="#" class="forgot">Forgot Password</a>
@@ -93,16 +93,18 @@ if(isset($_POST['login'])){
         $useraddress= $_POST['newuseraddress'];
         $confirmpassword= $_POST['confirmuserpassword'];
 
-        $check = "SELECT * FROM tbl_khachhang WHERE TenDangNhap = '$username'";
+        $check = "SELECT * FROM tbl_khachhang WHERE TenDangNhap = '$username' ";
         $result = mysqli_query($conn, $check);
 
         if( mysqli_num_rows($result) > 0){
-            echo '<script language="javascript">swal({
+            echo '<script language="javascript">
+            swal({
                 title: "Account and password have been used. Please register another one",
                 icon: "warning",
               })</script>';
         }else{
-            echo '<script language="javascript">swal({
+            echo '<script language="javascript">
+            swal({
                 title: "Sign up success",
                 icon: "success",
               })</script>';
@@ -116,7 +118,7 @@ if(isset($_POST['login'])){
     ?>
 
             <div class="form signupForm">
-                <form action="" method="POST" id="form-register">
+                <form id='formRegister' method="POST" >
                     <h3>Sign Up</h3>
                     <div class="form-group invalid">
                         <input name="newusername" id="new-user-name" type="text" placeholder="Username">
@@ -190,7 +192,6 @@ if(isset($_POST['login'])){
                 title: "Sai tài khoản hoặc mất khẩu rồi", 
                 text: "Vui lòng nhập lại",
                 type: "error",
-                
             });
             
     }
@@ -200,54 +201,87 @@ if(isset($_POST['login'])){
             });
         });
 
-    //     function check(){
-    //     var name = document.getElementById('new-user-name').value;
-    //     var rexName= /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
-    //     var phonenumber = document.getElementById('new-phonenumber').value;
-    //     var rexPhone = /(0|0[3|5|7|8|9])+([0-9]{8})/;
-    //     var email = document.getElementById('new-user-email').value;
-    //     var rexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g ;
-    //     var address = document.getElementById('new-user-address').value;
-    //     var password = document.getElementById('new-user-password').value;
-    //     var rexPassword =  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    //     var confirmpass = document.getElementById('confirm-user-password').value;
+       
+        const signinBtn = document.querySelector('.signinBtn')
+const signupBtn = document.querySelector('.signupBtn')
+const formBx = document.querySelector('.formBx')
+const body = document.querySelector('body')
+
+signupBtn.onclick = function() {
+    formBx.classList.add('active')
+    body.classList.add('active')
+}
+signinBtn.onclick = function() {
+    formBx.classList.remove('active')
+    body.classList.remove('active')
+}
 
 
 
-    //     if(name == "" || !rexName.test(name))
-    // {
-    //     document.getElementById('errolName').textContent= 'Tên không hợp lệ';
-    //     return false;
-    // }
+//         function checkRegister(){
+//     var name = document.getElementById('new-user-name').value;
+//     var rexName= /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+//     var phonenumber = document.getElementById('new-phonenumber').value;
+//     var rexPhone = /(0|0[3|5|7|8|9])+([0-9]{8})/;
+//     var email = document.getElementById('new-user-email').value;
+//     var rexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g ;
+//     var address = document.getElementById('new-user-address').value;
+//     var password = document.getElementById('new-user-password').value;
+//     var rexPassword =  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+//     var confirmpass = document.getElementById('confirm-user-password').value;
 
-    // if(phonenumber == "" || !rexPhone.test(phonenumber))
-    // {
-    //     document.getElementById('errolPhoneNumber').textContent= 'Số điện thoại không hợp lệ';
-    //     return false;
-    // }
+//     if(name == "" )
+// {
+//     document.getElementById('errolName').textContent= 'Tên không được để trống';
+// }else if(!rexName.test(name)){
+//     document.getElementById('errolName').textContent= 'Tên không hợp lệ';
+// }else{
+//     document.getElementById('errolName').textContent= '';
+//     return name;
+// }
+// if(phonenumber == "" )
+// {
+//     document.getElementById('errolPhoneNumber').textContent= 'Số điện thoại không được để trống';
+// }else if(!rexPhone.test(phonenumber)){
+//     document.getElementById('errolPhoneNumber').textContent= 'Số không hợp lệ';
+// }else{
+//     document.getElementById('errolPhoneNumber').textContent= '';
+//     return phonenumber;
+// }
+// if(email == "" )
+// {
+//     document.getElementById('errolEmail').textContent= 'Email không được để trống';
+// }else if(!rexEmail.test(email)){
+//     document.getElementById('errolEmail').textContent= 'Email không hợp lệ';
+// }else{
+//     document.getElementById('errolEmail').textContent= '';
+//     return email;
+// }
+// if(address == "" )
+// {
+//     document.getElementById('errolAddress').textContent= 'Email không được để trống';
+// }
+// if(password == "" )
+// {
+//     document.getElementById('errolPassword').textContent= 'Mật khẩu không được để trống';
+// }else if(!rexPassword.test(password)){
+//     document.getElementById('errolPassword').textContent= 'Mật khẩu không hợp lệ';
+// }else{
+//     document.getElementById('errolPassword').textContent= '';
+//     return password;
+// }
+// if(confirmpass== "" )
+// {
+//     document.getElementById('errolConfirmPassword').textContent= 'Cần xác minh mật khẩu';
+// }else if(confirmpass != password){
+//     document.getElementById('errolConfirmPassword').textContent= 'Mật khẩu không giống nhau';
+// }else{
+//     document.getElementById('errolConfirmPassword').textContent= '';
+//     return confirmpass;
+// }
+// return false;
+//     }
 
-    
-    // if(email == "" || !rexEmail.test(email))
-    // {
-    //     document.getElementById('errolEmail').textContent= 'Email không hợp lệ';
-    //     return false;
-    // }
-    // if(address == "")
-    // {
-    //     document.getElementById('errolAddress').textContent= 'Địa chỉ không hợp lệ';
-    //     return false;
-    // }
-    // if(password == "" || !rexPassword.test(password))
-    // {
-    //     document.getElementById('errolPassword').textContent = "Password phải lớn hơn 5 kí tự";
-    //     return false;
-    // }
-    // if(confirmpass != password){
-    //     document.getElementById('errolConfirmPassword').textContent = "Password không trùng khớp";
-    //     return false;
-    // }
-
-    // }
     </script>
 
 </body>
